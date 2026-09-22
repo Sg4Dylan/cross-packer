@@ -86,7 +86,9 @@ test('resolveWindowsPackageIdentity falls back for non-filesystem-safe names', (
 
 test('buildWindowsInstallerFilename formats exe name', () => {
   assert.equal(
-    buildWindowsInstallerFilename(configStub({ productName: 'My App', version: '1.2.3' })),
+    buildWindowsInstallerFilename(
+      configStub({ productName: 'My App', artifactName: 'My App', version: '1.2.3' }),
+    ),
     'My App_1.2.3.exe',
   )
 })
@@ -99,6 +101,7 @@ test('desktop template renders fully from config', () => {
     name: 'my-app',
     installDir: 'my-app',
     mimeType: 'x-scheme-handler/myapp;\n',
+    desktopExtra: '',
   })
   assert.ok(out.includes('Name=My App'))
   assert.ok(out.includes('Exec="/opt/my-app/my-app"'))
