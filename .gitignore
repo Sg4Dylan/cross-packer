@@ -16,6 +16,7 @@ release/
 /*.zip
 /*.7z
 /*.asar
+/*.tgz
 
 # cross-packer staging dirs (safety net when left behind by failed runs)
 cross-packer-*-staging/
