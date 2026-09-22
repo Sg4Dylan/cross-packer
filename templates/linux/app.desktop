@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name={{productName}}
+{{desktopExtra}}Comment={{description}}
+Exec="/opt/{{installDir}}/{{name}}" %U
+Icon={{name}}
+Type=Application
+Categories=Utility;
+{{mimeType}}
+StartupWMClass={{name}}
+StartupNotify=true
+Terminal=false

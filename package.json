@@ -1,0 +1,71 @@
+{
+  "name": "cross-packer",
+  "version": "0.1.0",
+  "description": "Cross-platform Electron app packager — assemble Windows (NSIS), macOS (.app/.zip) and Linux (.deb) artifacts on any host OS, without electron-builder.",
+  "type": "module",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "author": "SgDylan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sg4Dylan/cross-packer.git"
+  },
+  "homepage": "https://github.com/Sg4Dylan/cross-packer#readme",
+  "bugs": "https://github.com/Sg4Dylan/cross-packer/issues",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "cross-packer": "src/cli.ts"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@noble/hashes": "^2.4.0",
+    "7zip-bin": "^5.2.0",
+    "archiver": "^8.0.0",
+    "chromium-pickle-js": "^0.2.0",
+    "fs-extra": "^11.4.0",
+    "js-yaml": "^5.4.2",
+    "jszip": "^3.10.2",
+    "minimatch": "^10.2.6",
+    "plist": "5.0.0",
+    "resedit": "^3.1.0",
+    "tar": "^7.5.22"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.13",
+    "@types/archiver": "^8.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
+    "electron": "42.7.1",
+    "tsx": "^4.23.13"
+  },
+  "files": [
+    "src",
+    "dist",
+    "templates",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "tsx --test \"test/*.test.ts\"",
+    "build": "tsgo -p tsconfig.build.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "npx tsgo --noEmit"
+  },
+  "keywords": [
+    "electron",
+    "packaging",
+    "nsis",
+    "deb",
+    "cross-platform"
+  ]
+}

@@ -1,0 +1,49 @@
+#!/bin/sh
+# preinst: close running {{productName}} processes before install/upgrade.
+# Matches by /proc/<pid>/comm and cmdline argv[0] basename — deliberately not
+# by /proc/<pid>/exe, which becomes "(deleted)" after dpkg renames the old dir.
+APP_NAME="{{productName}}"
+APP_BASENAME="{{name}}"
+LOG="/tmp/{{name}}-preinst.log"
+
+log() { echo "$(date '+%H:%M:%S') preinst: $*" >> "$LOG" 2>/dev/null || true; }
+
+log "=== start (called as: $* , uid=$(id -u 2>/dev/null), PATH=$PATH) ==="
+
+find_app_pids() {
+  for dir in /proc/[0-9]*; do
+    [ -d "$dir" ] || continue
+    pid=${dir#/proc/}
+    [ "$pid" = "$$" ] && continue
+    comm=$(cat "$dir/comm" 2>/dev/null) || comm=""
+    if [ "$comm" = "$APP_BASENAME" ]; then
+      echo "$pid"
+      continue
+    fi
+    cmdline=$(cat "$dir/cmdline" 2>/dev/null) || continue
+    [ -n "$cmdline" ] || continue
+    argv0=${cmdline%%$'\x00'*}
+    base=${argv0##*/}
+    if [ "$base" = "$APP_BASENAME" ]; then
+      echo "$pid"
+    fi
+  done
+}
+
+kill_all() {
+  pids=$(find_app_pids)
+  [ -n "$pids" ] || { log "no running process found"; return 0; }
+  for pid in $pids; do
+    log "killing pid=$pid"
+    kill "$pid" 2>/dev/null || true
+  done
+  # give processes a moment to exit, then force leftovers
+  sleep 2
+  for pid in $pids; do
+    kill -9 "$pid" 2>/dev/null || true
+  done
+}
+
+kill_all
+log "=== done ==="
+exit 0

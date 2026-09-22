@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Build output & artifacts
+dist/
+dist-*/
+out/
+release/
+*.exe
+*.deb
+*.dmg
+*.app/
+*.blockmap
+
+# Archives — ignore at root only (templates/examples keep their checked-in files)
+/*.zip
+/*.7z
+/*.asar
+
+# cross-packer staging dirs (safety net when left behind by failed runs)
+cross-packer-*-staging/
+
+# Caches
+.electron-cache/
+.nsis-cache/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment & secrets — never commit signing credentials
+.env
+.env.*
+*.pem
+*.p12
+*.pfx
+*.mobileprovision
+
+# Editor & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# TypeScript / tooling
+*.tsbuildinfo
+.npm/
+.cache/

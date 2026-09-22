@@ -1,0 +1,9 @@
+Package: {{name}}
+Version: {{version}}
+Architecture: {{debArch}}
+Maintainer: {{maintainer}}
+Depends: {{depends}}
+{{recommends}}Section: utils
+Priority: optional
+Installed-Size: {{installedSize}}
+Description: {{description}}

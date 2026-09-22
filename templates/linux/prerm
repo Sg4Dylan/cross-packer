@@ -1,0 +1,43 @@
+#!/bin/sh
+# prerm: close running {{productName}} processes before remove/upgrade.
+APP_EXE="/opt/{{installDir}}/{{name}}"
+LOG="/tmp/{{name}}-prerm.log"
+
+log() { echo "$(date '+%H:%M:%S') prerm: $*" >> "$LOG" 2>/dev/null || true; }
+
+log "=== start (called as: $* , uid=$(id -u 2>/dev/null)) ==="
+log "APP_EXE=$APP_EXE"
+
+find_app_pids() {
+  for dir in /proc/[0-9]*; do
+    [ -d "$dir" ] || continue
+    pid=${dir#/proc/}
+    [ "$pid" = "$$" ] && continue
+    exe=$(readlink "$dir/exe" 2>/dev/null) || exe=""
+    case "$exe" in
+      *"$APP_EXE"*) echo "$pid"; continue ;;
+    esac
+    cmdline=$(cat "$dir/cmdline" 2>/dev/null) || continue
+    [ -n "$cmdline" ] || continue
+    case "$cmdline" in
+      *"$APP_EXE"*) echo "$pid" ;;
+    esac
+  done
+}
+
+kill_all() {
+  pids=$(find_app_pids)
+  [ -n "$pids" ] || { log "no running process found"; return 0; }
+  for pid in $pids; do
+    log "killing pid=$pid"
+    kill "$pid" 2>/dev/null || true
+  done
+  sleep 2
+  for pid in $pids; do
+    kill -9 "$pid" 2>/dev/null || true
+  done
+}
+
+kill_all
+log "=== done ==="
+exit 0

@@ -1,0 +1,4 @@
+provider: generic
+url: {{updateServerUrl}}
+updaterCacheDirName: {{updaterCacheDirName}}
+channel: {{channel}}
