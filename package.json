@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Cross-platform Electron app packager — assemble Windows (NSIS), macOS (.app/.zip) and Linux (.deb) artifacts on any host OS, without electron-builder.",
   "type": "module",
-  "private": true,
+  "private": false,
   "license": "AGPL-3.0-or-later",
   "author": "SgDylan",
   "repository": {
